@@ -1,0 +1,24 @@
+meta {
+  name: Municipalities by region code
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{apiUrl}}/municipalities?region_code=1400000000
+  body: none
+  auth: none
+}
+
+params:query {
+  region_code: 1400000000
+}
+
+tests {
+  test("every municipality belongs to region_code 1400000000", function () {
+    const body = res.getBody();
+    expect(res.getStatus()).to.equal(200);
+    expect(body.pagination.total).to.be.above(0);
+    expect(body.data.every((item) => item.region_code === "1400000000")).to.equal(true);
+  });
+}

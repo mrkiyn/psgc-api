@@ -1,0 +1,19 @@
+meta {
+  name: Root
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/
+  body: none
+  auth: none
+}
+
+tests {
+  test("returns 200 with the API name as plain text", function () {
+    expect(res.getStatus()).to.equal(200);
+    expect(res.getHeader("content-type")).to.contain("text/plain");
+    expect(res.getBody()).to.equal("Philippine Standard Geographic Code API (PSGC API)");
+  });
+}

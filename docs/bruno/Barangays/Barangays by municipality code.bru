@@ -1,0 +1,24 @@
+meta {
+  name: Barangays by municipality code
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{apiUrl}}/barangays?municipality_code=1400101000
+  body: none
+  auth: none
+}
+
+params:query {
+  municipality_code: 1400101000
+}
+
+tests {
+  test("every barangay belongs to municipality_code 1400101000", function () {
+    const body = res.getBody();
+    expect(res.getStatus()).to.equal(200);
+    expect(body.pagination.total).to.be.above(0);
+    expect(body.data.every((item) => item.municipality_code === "1400101000")).to.equal(true);
+  });
+}

@@ -1,0 +1,24 @@
+meta {
+  name: Get region by code
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{apiUrl}}/regions?psgc_code=0100000000
+  body: none
+  auth: none
+}
+
+params:query {
+  psgc_code: 0100000000
+}
+
+tests {
+  test("returns only the region with this code", function () {
+    const body = res.getBody();
+    expect(res.getStatus()).to.equal(200);
+    expect(body.pagination.total).to.equal(1);
+    expect(body.data[0].psgc_code).to.equal("0100000000");
+  });
+}

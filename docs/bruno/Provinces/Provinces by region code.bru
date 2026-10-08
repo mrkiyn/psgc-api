@@ -1,0 +1,24 @@
+meta {
+  name: Provinces by region code
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{apiUrl}}/provinces?region_code=0100000000
+  body: none
+  auth: none
+}
+
+params:query {
+  region_code: 0100000000
+}
+
+tests {
+  test("every province belongs to region_code 0100000000", function () {
+    const body = res.getBody();
+    expect(res.getStatus()).to.equal(200);
+    expect(body.pagination.total).to.be.above(0);
+    expect(body.data.every((item) => item.region_code === "0100000000")).to.equal(true);
+  });
+}

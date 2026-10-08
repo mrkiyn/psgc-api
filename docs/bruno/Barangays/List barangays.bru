@@ -1,0 +1,46 @@
+meta {
+  name: List barangays
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{apiUrl}}/barangays?page=1&per_page=20
+  body: none
+  auth: none
+}
+
+params:query {
+  page: 1
+  per_page: 20
+  ~psgc_code: 1400101001
+  ~region_code: 1400000000
+  ~province_code: 1400100000
+  ~city_code: 1430300000
+  ~municipality_code: 1400101000
+  ~urban_rural: U
+}
+
+docs {
+  Lists all 42,010 barangays, sorted by PSGC code.
+  
+  Parents come from the code: the first 7 digits give the barangay's city, municipality, or
+  Manila district. Manila district barangays have both `city_code` (Manila) and `municipality_code` (the district).
+  
+  Query parameters:
+  - `psgc_code`: return only the barangay with this 10-digit code
+  - `region_code`, `province_code`: return only barangays in this region or province
+  - `city_code`: return only barangays in this city
+  - `municipality_code`: return only barangays in this municipality or Manila district
+  - `urban_rural`: `U` (urban) or `R` (rural)
+  - `page`, `per_page`: pagination (max 100 per page)
+}
+
+tests {
+  test("returns the first page of 42,010 barangays", function () {
+    const body = res.getBody();
+    expect(res.getStatus()).to.equal(200);
+    expect(body.data).to.have.lengthOf(20);
+    expect(body.pagination).to.eql({ page: 1, per_page: 20, total: 42010, total_pages: 2101 });
+  });
+}

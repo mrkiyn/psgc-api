@@ -1,0 +1,35 @@
+meta {
+  name: List regions
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{apiUrl}}/regions?page=1&per_page=20
+  body: none
+  auth: none
+}
+
+params:query {
+  page: 1
+  per_page: 20
+  ~psgc_code: 0100000000
+}
+
+docs {
+  Lists all 18 regions, sorted by PSGC code.
+  
+  Query parameters:
+  - `psgc_code`: return only the region with this 10-digit code
+  - `page`, `per_page`: pagination (max 100 per page)
+}
+
+tests {
+  test("returns all 18 regions on one page", function () {
+    const body = res.getBody();
+    expect(res.getStatus()).to.equal(200);
+    expect(body.success).to.equal(true);
+    expect(body.data).to.have.lengthOf(18);
+    expect(body.pagination).to.eql({ page: 1, per_page: 20, total: 18, total_pages: 1 });
+  });
+}

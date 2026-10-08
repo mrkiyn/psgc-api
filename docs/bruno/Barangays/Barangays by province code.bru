@@ -1,0 +1,24 @@
+meta {
+  name: Barangays by province code
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{apiUrl}}/barangays?province_code=1400100000
+  body: none
+  auth: none
+}
+
+params:query {
+  province_code: 1400100000
+}
+
+tests {
+  test("every barangay belongs to province_code 1400100000", function () {
+    const body = res.getBody();
+    expect(res.getStatus()).to.equal(200);
+    expect(body.pagination.total).to.be.above(0);
+    expect(body.data.every((item) => item.province_code === "1400100000")).to.equal(true);
+  });
+}

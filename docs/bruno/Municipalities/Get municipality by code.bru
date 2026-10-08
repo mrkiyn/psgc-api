@@ -1,0 +1,24 @@
+meta {
+  name: Get municipality by code
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{apiUrl}}/municipalities?psgc_code=1400101000
+  body: none
+  auth: none
+}
+
+params:query {
+  psgc_code: 1400101000
+}
+
+tests {
+  test("returns only the municipality with this code", function () {
+    const body = res.getBody();
+    expect(res.getStatus()).to.equal(200);
+    expect(body.pagination.total).to.equal(1);
+    expect(body.data[0].psgc_code).to.equal("1400101000");
+  });
+}

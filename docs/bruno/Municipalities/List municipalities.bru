@@ -1,0 +1,42 @@
+meta {
+  name: List municipalities
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{apiUrl}}/municipalities?page=1&per_page=20&region_code=1300000000
+  body: none
+  auth: none
+}
+
+params:query {
+  page: 1
+  per_page: 20
+  region_code: 1300000000
+  ~psgc_code: 1400101000
+  ~type: municipality
+  ~province_code: 1400100000
+  ~city_code: 1380600000
+}
+
+tests {
+  test("returns the first page of 1,507 items", function () {
+    const body = res.getBody();
+    expect(res.getStatus()).to.equal(200);
+    expect(body.data).to.have.lengthOf(20);
+    expect(body.pagination).to.eql({ page: 1, per_page: 20, total: 1507, total_pages: 76 });
+  });
+}
+
+docs {
+  Lists all 1,507 municipalities and sub-municipalities, sorted by PSGC code.
+  
+  Query parameters:
+  - `psgc_code`: return only the item with this 10-digit code
+  - `type`: `municipality` or `sub_municipality`
+  - `region_code`: return only items in this region
+  - `province_code`: return only items in this province
+  - `city_code`: return only sub-municipalities of this city (Manila is `1380600000`)
+  - `page`, `per_page`: pagination (max 100 per page)
+}

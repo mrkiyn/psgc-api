@@ -1,0 +1,24 @@
+meta {
+  name: Barangays by city code
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{apiUrl}}/barangays?city_code=1430300000
+  body: none
+  auth: none
+}
+
+params:query {
+  city_code: 1430300000
+}
+
+tests {
+  test("every barangay belongs to city_code 1430300000", function () {
+    const body = res.getBody();
+    expect(res.getStatus()).to.equal(200);
+    expect(body.pagination.total).to.be.above(0);
+    expect(body.data.every((item) => item.city_code === "1430300000")).to.equal(true);
+  });
+}

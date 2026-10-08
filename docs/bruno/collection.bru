@@ -1,0 +1,13 @@
+docs {
+  # PSGC API
+  
+  Philippine Standard Geographic Code API, served from the PSA datafile `PSGC-2Q-2026-Publication-Datafile.xlsx`.
+  
+  Select the **Local** environment, start the server with
+  `uv run uvicorn app.main:app --app-dir src --reload`, then run any request or the whole collection.
+  
+  - List endpoints return `{ success, message, data: [...], pagination }`.
+  - Filter with query parameters (`psgc_code`, `region_code`, `province_code`, `city_code`, ...).
+  - Paginate with `page` (default 1) and `per_page` (default 20, max 100).
+  - Parent codes are derived from the 10-digit PSGC code: region = first 2 digits, province or parent city = first 5 digits.
+}
